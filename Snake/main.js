@@ -18,7 +18,7 @@ var dy = 0;
 var dead = false;
 
 // Move snake every interval
-window.setInterval(moveSnake, 10);
+window.setInterval(moveSnake, 100);
 
 // Make canvas cool and such
 var game = document.getElementById("gameCanvas");
@@ -206,7 +206,5 @@ function checkDead(){
 
 function gameOver(){
     dead = true;
-    game.remove()
-    ctx.fillRect(0, 0, game.width, game.height);
 }
 
