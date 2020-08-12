@@ -27,7 +27,7 @@ game.width = xGrid*2*blockSize;
 game.height = yGrid*2*blockSize;
 
 game.style.width = `${xGrid*blockSize}px`;
-game.style.height = `${yGrid*blockSize}px`
+game.style.height = `${yGrid*blockSize}px`;
 
 var ctx = game.getContext("2d");
 
