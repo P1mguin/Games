@@ -55,18 +55,52 @@ function check(){
 }
 
 function solve(){
-    // Create an index of the already filled in numbers, those may not be violated
-    let numbers = getOccupied();
-    while(!check()){
-        // Check whether the board is filled
-        let filled = getOccupied().length === 81;
-        // If we are filled we need to backtrack
-        if(filled){
+    // Find an empty slot to try
+    let row = -1;
+    let col = -1;
+    let filled = true;
 
-        } else { // Just try something
-
+    // Checked and working
+    // Column loop
+    for (let i = 0; i < 9; i++) {
+        // Row loops
+        for (let j = 0; j < 9; j++) {
+            if(!parseInt(rows[i].querySelector(`:nth-child(${j + 1})`).innerText)){
+                // We found an empty spot
+                // Now store this place so we can use it later
+                row = i;
+                col = j;
+                filled = false;
+                break;
+            }
+        }
+        if(!filled){
+            break;
         }
     }
+
+    // We have filled everything boi
+    if(filled){
+        return true;
+    }
+
+    // Not working
+    // For each spot find an alternative
+    for (let i = 1; i < 10; i++) {
+        // Try a safe option
+        if(checkSafe(i, row, col)){
+            rows[row].querySelector(`:nth-child(${col + 1})`).innerText = i;
+
+            // If that leads to a solvable sudoku do that
+            if(solve()){
+                return true;
+            } else {
+                // Otherwise remove your mistakes
+                rows[row].querySelector(`:nth-child(${col + 1})`).innerText = "";
+            }
+        }
+    }
+    return false;
 }
 
 function checkSafe(guess, rowIndex, colIndex){
@@ -74,23 +108,7 @@ function checkSafe(guess, rowIndex, colIndex){
     return !(getRow(rowIndex).includes(guess) || getColumn(colIndex).includes(guess) || getBlock(Math.floor(rowIndex / 3), Math.floor(colIndex / 3)).includes(guess));
 }
 
-function getOccupied(){
-    let numbers = [];
-    // Vertical loop - y
-    for (let i = 0; i < rows.length; i++) {
-        // Horizontal loop - x
-        for (let j = 0; j < 9; j++) {
-            let number = parseInt(rows[i].querySelector(`:nth-child(${j + 1})`).innerText)
-            if(Number.isInteger(number)){
-                numbers.push({
-                    x: j, y: i
-                });
-            }
-        }
-    }
-    return numbers;
-}
-
+// Friendly reminder to self that rows are horizontal
 function getRow(rowIndex){
     let row = rows[rowIndex];
     let numbers = [];
@@ -100,6 +118,7 @@ function getRow(rowIndex){
     return numbers;
 }
 
+// Friendly reminder to self that columns are vertical
 function getColumn(colIndex){
     let numbers = [];
     for (let i = 0; i < 9; i++) {
