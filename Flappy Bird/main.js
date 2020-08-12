@@ -65,7 +65,7 @@ function gravity(){
 
 document.addEventListener('keypress', moveUp);
 function moveUp(){
-    dy = -3;
+    dy = -2;
     setTimeout(function () {
         dy = 2;
     }, 300)
@@ -119,6 +119,13 @@ function movePipe(){
     if(!bird.alive){
         return;
     }
+
+    // Check whether you would bump into a pipe
+    if(!checkPipe()){
+        bird.alive = false;
+        return;
+    }
+
     clearPipe()
     removeBird();
     for (let i = 0; i < pipes.length; i++) {
@@ -127,4 +134,17 @@ function movePipe(){
     }
     drawPipe();
     drawBird();
+}
+
+function checkPipe(){
+    for (let i = 0; i < pipes.length; i++) {
+        let pipe = pipes[i];
+        if(pipe.x < 80 || pipe.x > 110){
+            continue;
+        }
+        if(bird.y < pipe.gap || bird.y > pipe.gap + 150){
+            return false;
+        }
+    }
+    return true;
 }
