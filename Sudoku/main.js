@@ -35,3 +35,17 @@ function checkVertical(colIndex){
     }
     return JSON.stringify(numbers.sort()) === JSON.stringify(nums);
 }
+
+// Blocks are indexed like the rows and columns so top left is 0,0 and bottom right is 2,2
+function checkBlock(rowIndex, colIndex){
+    let first = rows[rowIndex * 3];
+    let second = rows[rowIndex * 3 + 1];
+    let third = rows[rowIndex * 3 + 2];
+    let numbers = [];
+    for (let i = colIndex * 3; i < colIndex * 3 + 3; i++) {
+        numbers.push(parseInt(first.querySelector(`:nth-child(${i + 1})`).innerText));
+        numbers.push(parseInt(second.querySelector(`:nth-child(${i + 1})`).innerText));
+        numbers.push(parseInt(third.querySelector(`:nth-child(${i + 1})`).innerText));
+    }
+    return JSON.stringify(numbers.sort()) === JSON.stringify(nums);
+}
