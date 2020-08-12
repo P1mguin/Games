@@ -13,12 +13,10 @@ var rows = [
 const nums = [1,2,3,4,5,6,7,8,9]
 
 // The rules ---------------------------------------------------------------------
-
 // Horizontal line
 // Rows are horizontally indexed from left to right, most left is 0 most right is 8
 // Rows are vertically indexed from top to bottom, topmost is 0 most bottom is 8
 function checkHorizontal(rowIndex){
-    // Compare the sorted arrays, if correct this should be the same as nums
     return JSON.stringify(getRow(rowIndex).sort()) === JSON.stringify(nums);
 }
 
@@ -54,6 +52,40 @@ function check(){
     return true;
 }
 
+// Functional
+// Friendly reminder to self that rows are horizontal
+function getRow(rowIndex){
+    let row = rows[rowIndex];
+    let numbers = [];
+    for (let i = 0; i < 9; i++) {
+        numbers.push(parseInt(row.querySelector(`:nth-child(${i + 1})`).innerText));
+    }
+    return numbers;
+}
+
+// Friendly reminder to self that columns are vertical
+function getColumn(colIndex){
+    let numbers = [];
+    for (let i = 0; i < 9; i++) {
+        numbers.push(parseInt(document.querySelector(`tr:nth-child(${i + 1}`).querySelector(`:nth-child(${colIndex + 1}`).innerText));
+    }
+    return numbers;
+}
+
+function getBlock(rowIndex, colIndex){
+    let first = rows[rowIndex * 3];
+    let second = rows[rowIndex * 3 + 1];
+    let third = rows[rowIndex * 3 + 2];
+    let numbers = [];
+    for (let i = colIndex * 3; i < colIndex * 3 + 3; i++) {
+        numbers.push(parseInt(first.querySelector(`:nth-child(${i + 1})`).innerText));
+        numbers.push(parseInt(second.querySelector(`:nth-child(${i + 1})`).innerText));
+        numbers.push(parseInt(third.querySelector(`:nth-child(${i + 1})`).innerText));
+    }
+    return numbers;
+}
+
+// Solving essentials --------------------------------------------------------------------------------------------------
 function solve(){
     // Find an empty slot to try
     let row = -1;
@@ -107,37 +139,4 @@ function checkSafe(guess, rowIndex, colIndex){
     // Check whether the number is not yet in that row and column
     return !(getRow(rowIndex).includes(guess) || getColumn(colIndex).includes(guess) || getBlock(Math.floor(rowIndex / 3), Math.floor(colIndex / 3)).includes(guess));
 }
-
-// Friendly reminder to self that rows are horizontal
-function getRow(rowIndex){
-    let row = rows[rowIndex];
-    let numbers = [];
-    for (let i = 0; i < 9; i++) {
-        numbers.push(parseInt(row.querySelector(`:nth-child(${i + 1})`).innerText));
-    }
-    return numbers;
-}
-
-// Friendly reminder to self that columns are vertical
-function getColumn(colIndex){
-    let numbers = [];
-    for (let i = 0; i < 9; i++) {
-        numbers.push(parseInt(document.querySelector(`tr:nth-child(${i + 1}`).querySelector(`:nth-child(${colIndex + 1}`).innerText));
-    }
-    return numbers;
-}
-
-function getBlock(rowIndex, colIndex){
-    let first = rows[rowIndex * 3];
-    let second = rows[rowIndex * 3 + 1];
-    let third = rows[rowIndex * 3 + 2];
-    let numbers = [];
-    for (let i = colIndex * 3; i < colIndex * 3 + 3; i++) {
-        numbers.push(parseInt(first.querySelector(`:nth-child(${i + 1})`).innerText));
-        numbers.push(parseInt(second.querySelector(`:nth-child(${i + 1})`).innerText));
-        numbers.push(parseInt(third.querySelector(`:nth-child(${i + 1})`).innerText));
-    }
-    return numbers;
-}
-
 
