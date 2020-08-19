@@ -1,5 +1,4 @@
-var table = document.querySelector("table");
-var rows = [
+const rows = [
     document.querySelector("tr:nth-child(1)"),
     document.querySelector("tr:nth-child(2)"),
     document.querySelector("tr:nth-child(3)"),
@@ -33,27 +32,25 @@ function check(){
     for (let i = 0; i < 9; i++) {
         if(!checkHorizontal(i)){
             alert(`Not correct, failed on row ${i}`)
-            return false;
+            return;
         }
         if(!checkVertical(i)){
             alert(`Not correct, failed on column ${i}`)
-            return false;
+            return;
         }
     }
     for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++) {
             if(!checkBlock(i, j)){
                 alert(`Not correct, failed on block ${i}, ${j}`);
-                return false;
+                return;
             }
         }
     }
     alert("Correct");
-    return true;
 }
 
 // Functional
-// Friendly reminder to self that rows are horizontal
 function getRow(rowIndex){
     let row = rows[rowIndex];
     let numbers = [];
@@ -63,7 +60,6 @@ function getRow(rowIndex){
     return numbers;
 }
 
-// Friendly reminder to self that columns are vertical
 function getColumn(colIndex){
     let numbers = [];
     for (let i = 0; i < 9; i++) {
@@ -111,15 +107,14 @@ function solve(){
         }
     }
 
-    // We have filled everything boi
+    // We have filled everything
     if(filled){
         return true;
     }
 
-    // Not working
-    // For each spot find an alternative
+    // For each spot find a working option
     for (let i = 1; i < 10; i++) {
-        // Try a safe option
+        // If that is safe solve the sudoku you generated
         if(checkSafe(i, row, col)){
             rows[row].querySelector(`:nth-child(${col + 1})`).innerText = i;
 
@@ -135,8 +130,7 @@ function solve(){
     return false;
 }
 
+// Check whether the number is not yet in that row, column or block
 function checkSafe(guess, rowIndex, colIndex){
-    // Check whether the number is not yet in that row and column
     return !(getRow(rowIndex).includes(guess) || getColumn(colIndex).includes(guess) || getBlock(Math.floor(rowIndex / 3), Math.floor(colIndex / 3)).includes(guess));
 }
-
